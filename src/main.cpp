@@ -56,9 +56,14 @@ int main(int argc, char* argv[]) {
       auto ftime = chrono::file_clock::to_sys(fs::last_write_time(working_dir));
       if (timestamp < ftime) {
         execute_cmd = true;
+        timestamp = ftime;
       }
     } else {
-        
+      auto dir_time = get_latest_timepoint_from_dir(working_dir, timestamp);
+      if (timestamp < dir_time) {
+        execute_cmd = true;
+        timestamp = dir_time;
+      }
     }
 
     if (execute_cmd) {
